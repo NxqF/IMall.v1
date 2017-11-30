@@ -1,0 +1,1123 @@
+<html ng-app="ionicApp" style=" font-size: 96px;">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+
+    <title>ionic2</title>
+
+    <link href="css/main.css" rel="stylesheet" type="text/css">
+
+    <link rel="stylesheet" href="css/ionic.css">
+
+    <script src="js/ionic.bundle.min.js"></script>
+
+    <script src="js/jquery-3.1.1.min.js"></script>
+
+    <script src="js/ionic-1.js"></script>
+
+    <script type="text/javascript">
+        angular.module('ionicApp', ['ionic'])
+                .controller('SlideController', function($scope,$ionicSlideBoxDelegate) {
+
+                    $scope.myActiveSlide = 1;
+                    $scope.index=0;
+                    $scope.go=function(index){
+                        $ionicSlideBoxDelegate.slide(index);
+                    }
+                    $scope.go_changed=function(index){
+                        console.log(index)
+                    }
+                })
+                .controller('MyController', function($scope, $http) {
+                    $scope.items = [1,2,3];
+                    $scope.doRefresh = function() {
+                        $http.get('www/ionic_5.html')
+                                .success(function(newItems) {
+                                    $scope.items = newItems;
+                                })
+                                .finally(function() {
+                                    // 停止广播ion-refresher
+                                    $scope.$broadcast('scroll.refreshComplete');
+                                });
+                    };
+                })
+
+                .config(function($stateProvider, $urlRouterProvider,$ionicConfigProvider) {
+
+                    $stateProvider
+                            .state('tabs', {
+                                url: "/tab",
+                                abstract: true,
+                                templateUrl: "templates/tabs.html"
+                            })
+                            .state('tabs.home', {
+                                url: "/home",
+                                views: {
+                                    'home-tab': {
+                                        templateUrl: "templates/home.html",
+                                        controller: 'HomeTabCtrl'
+                                    }
+                                }
+                            })
+                            .state('tabs.facts', {
+                                url: "/facts",
+                                views: {
+                                    'home-tab': {
+                                        templateUrl: "templates/facts.html"
+                                    }
+                                }
+                            })
+                            .state('cart', {
+                                url: "/cart",
+                                templateUrl: "templates/cart.html"
+                            })
+                            .state('shop', {
+                                url: "/shop",
+                                templateUrl: "templates/shop.html"
+                            })
+                            .state('item', {
+                                url: "/item",
+                                templateUrl: "templates/item.html"
+                            });
+
+
+                    $urlRouterProvider.otherwise("/tab/home");
+
+
+
+                    $ionicConfigProvider.platform.ios.tabs.style('standard');
+                    $ionicConfigProvider.platform.ios.tabs.position('bottom');
+                    $ionicConfigProvider.platform.android.tabs.style('standard');
+                    $ionicConfigProvider.platform.android.tabs.position('standard');
+
+                    $ionicConfigProvider.platform.ios.navBar.alignTitle('center');
+                    $ionicConfigProvider.platform.android.navBar.alignTitle('left');
+
+                    $ionicConfigProvider.platform.ios.backButton.previousTitleText('').icon('ion-ios-arrow-thin-left');
+                    $ionicConfigProvider.platform.android.backButton.previousTitleText('').icon('ion-android-arrow-back');
+
+                    $ionicConfigProvider.platform.ios.views.transition('ios');
+                    $ionicConfigProvider.platform.android.views.transition('android');
+
+                })
+
+                .controller('HomeTabCtrl', function($scope) {
+//                    console.log('HomeTabCtrl');
+                });
+    </script>
+</head>
+
+<body>
+
+<ion-nav-view></ion-nav-view>
+
+<script id="templates/cart.html" type="text/ng-template">
+    <ion-header-bar class="bar-light">
+        <button class="button button-clear icon-left ion-chevron-left" ui-sref="tabs.home"></button>
+
+        <label class="item-input-wrapper">
+            <input type="search" placeholder="小鸡手柄g3" ui-sref="cart">
+        </label>
+        <button class="button button-clear icon-right ion-android-search" ui-sref="shop">
+        </button>
+    </ion-header-bar>
+
+
+    <ion-content>
+        <div style="padding: 0 10px">
+            <div  style="margin-top: 7px;color:#aaa">最近搜索</div>
+            <div style="display:flex;margin-top: 7px">
+                <div class="grbd" ui-sref="shop">衬衫男</div>
+                <div class="grbd">四件套</div>
+                <div class="grbd">连衣裙</div>
+            </div>
+            <div style="display:flex;margin-top: 7px">
+                <div class="grbd">笔记本电脑</div>
+                <div class="grbd">吊顶灯</div>
+                <div class="grbd">运动鞋</div>
+            </div>
+
+            <div style="margin-top: 7px">猜你想找</div>
+            <div style="display: flex;margin-top: 7px">
+                <div class="grbd">双肩包</div>
+                <div class="grbd">行车记录仪</div>
+            </div>
+        </div>
+    </ion-content>
+
+
+</script>
+
+<script id="templates/shop.html" type="text/ng-template">
+    <ion-header-bar class="bar-light">
+        <button class="button button-clear icon-left ion-chevron-left" ui-sref="cart"></button>
+
+        <label class="item-input-wrapper">
+            <input type="search" placeholder="衬衫男">
+        </label>
+        <button class="button button-clear icon-right ion-android-search">
+        </button>
+    </ion-header-bar>
+
+
+    <ion-content>
+        <!--<div style="padding:0 10px">-->
+            <!--<div class="row">-->
+                <!--<div class="col">综合</div>-->
+                <!--<div class="col">销量</div>-->
+                <!--<div class="col">逛啊</div>-->
+                <!--<div class="col">店铺</div>-->
+                <!--<div class="col">筛选</div>-->
+            <!--</div>-->
+        <!--</div>-->
+        <div class="list">
+
+            <a class="item item-thumbnail-left" ui-sref="item">
+                <img src="pic/item1.jpg">
+                <span>JackJones杰克琼斯格纹渐变纯棉尖领男士春装衬衫衣</span>
+                <p>纯棉面料渐变格纹修身版型</p>
+                <div style="display: flex;margin-top: 20px;text-align: right">
+                    <div style="color:red;">¥199.5</div><p style="width: 100%">JackJones官方旗舰店</p>
+                </div>
+
+            </a>
+
+            <a class="item item-thumbnail-left"  ui-sref="item">
+                <img src="pic/item2.jpg">
+                <span>JackJones杰克琼斯格纹纯棉尖领男士春装长袖衬衫衣</span>
+                <p>彩贝纽扣细格纹提花尖领</p>
+                <div style="display: flex;margin-top: 20px;text-align: right">
+                    <div style="color:red;">249.50</div><p style="width: 100%">JackJones官方旗舰店</p>
+                </div>
+
+            </a>
+
+            <a class="item item-thumbnail-left"  ui-sref="item">
+                <img src="pic/item3.jpg">
+                <span>春夏衬衫男士长袖衬衣青少年纯棉复古休闲学生工装打底韩版修身潮</span>
+                <p>定制面料 合身裁剪 特殊水洗 柔软亲肤</p>
+                <div style="display: flex;margin-top: 20px;text-align: right">
+                    <div style="color:red;">¥79.00</div><p style="width: 100%">blackmonday旗舰店</p>
+                </div>
+
+            </a>
+
+            <a class="item item-thumbnail-left"  ui-sref="item">
+                <img src="pic/item4.jpg">
+                <span>Lilanz/利郎长袖衬衫男士2017春季拼色条纹纯棉衬衣男修身</span>
+                <p>纯棉面料</p>
+                <div style="display: flex;margin-top: 20px;text-align: right">
+                    <div style="color:red;">¥299.00</div><p style="width: 100%">利郎官方旗舰店</p>
+                </div>
+
+            </a>
+
+            <a class="item item-thumbnail-left"  ui-sref="item">
+                <img src="pic/item4.jpg">
+                <span>Lilanz/利郎长袖衬衫男士2017春季拼色条纹纯棉衬衣男修身</span>
+                <p>纯棉面料</p>
+                <div style="display: flex;margin-top: 20px;text-align: right">
+                    <div style="color:red;">¥299.00</div><p style="width: 100%">利郎官方旗舰店</p>
+                </div>
+
+            </a>
+
+            <a class="item item-thumbnail-left"  ui-sref="item">
+                <img src="pic/item4.jpg">
+                <span>Lilanz/利郎长袖衬衫男士2017春季拼色条纹纯棉衬衣男修身</span>
+                <p>纯棉面料</p>
+                <div style="display: flex;margin-top: 20px;text-align: right">
+                    <div style="color:red;">¥299.00</div><p style="width: 100%">利郎官方旗舰店</p>
+                </div>
+
+            </a>
+
+            <a class="item item-thumbnail-left"  ui-sref="item">
+                <img src="pic/item4.jpg">
+                <span>Lilanz/利郎长袖衬衫男士2017春季拼色条纹纯棉衬衣男修身</span>
+                <p>纯棉面料</p>
+                <div style="display: flex;margin-top: 20px;text-align: right">
+                    <div style="color:red;">¥299.00</div><p style="width: 100%">利郎官方旗舰店</p>
+                </div>
+
+            </a>
+
+            <a class="item item-thumbnail-left"  ui-sref="item">
+                <img src="pic/item4.jpg">
+                <span>Lilanz/利郎长袖衬衫男士2017春季拼色条纹纯棉衬衣男修身</span>
+                <p>纯棉面料</p>
+                <div style="display: flex;margin-top: 20px;text-align: right">
+                    <div style="color:red;">¥299.00</div><p style="width: 100%">利郎官方旗舰店</p>
+                </div>
+
+            </a>
+
+        </div>
+
+    </ion-content>
+
+
+</script>
+
+<script id="templates/item.html" type="text/ng-template">
+
+    <ion-content>
+        <div class="item" align="center" style="padding:0" ng-controller="SlideController">
+            <ion-slide-box style="height:3.75rem" does-continue="true"
+                           auto-play="true" slide-interval="5000" show-pager="true" active-slide="index" pager-click="go(index)">
+                <ion-slide>
+                    <div class="box"><img src="pic/itempo1.jpg" style="width:100%" alt=""></div>
+                </ion-slide>
+                <ion-slide>
+                    <div class="box"><img src="pic/itempo2.jpg" style="width:100%" alt=""></div>
+                </ion-slide>
+                <ion-slide>
+                    <div class="box"><img src="pic/itempo3.jpg" style="width:100%" alt=""></div>
+                </ion-slide>
+                <ion-slide>
+                    <div class="box"><img src="pic/itempo4.jpg" style="width:100%" alt=""></div>
+                </ion-slide>
+                <ion-slide>
+                    <div class="box"><img src="pic/itempo5.jpg" style="width:100%" alt=""></div>
+                </ion-slide>
+
+            </ion-slide-box>
+        </div>
+
+
+        <div class="list">
+            <div class="item boxs" style="padding:10px 10px 0;margin-bottom: 8px;border-width: 0;">
+                <section>
+                    <div style="font-size: 0.14rem;word-wrap: break-word;">JackJones杰克琼斯格纹渐变纯棉尖领男士春装衬衫衣</div>
+                </section>
+                <section style="margin-top: 5px;">
+                    <span style="font-size: 0.22rem;color:red">¥199.50</span>
+                    <span style="font-size: 0.12rem;color:#fff;background-color: red;padding: 2px">优惠促销</span>
+                </section>
+                <section style="margin-top: 5px;">
+                    <span style="font-size: 0.12rem;color: #9b9b9b;">价格</span>
+                    <span style="font-size: 0.12rem;" class="line-th">¥399.00</span>
+                </section>
+                <section style="text-align: center" class="row">
+                    <span style="font-size: 0.12rem;color: #9b9b9b;" class="col">快递：12.00</span>
+                    <span style="font-size: 0.12rem;" class="col">月销量851件</span>
+                    <span style="font-size: 0.12rem;" class="col">天津</span>
+                </section>
+            </div>
+            <div class="item" style="border-top: 0;border-left: 0;border-right:0">
+                <span style="font-size: .1rem;color: red;border: 1px solid red" >促销</span><span style="font-size: .1rem" > 满1件，享包邮；不包邮地区：台湾，香港，澳门，海外</span><br>
+                <span style="font-size: .1rem;color: red;border: 1px solid red">积分</span><span style="font-size: .1rem"> 购买可得99积分</span>
+            </div>
+            <div class="item" style="border-top: 0;border-left: 0;border-right:0;padding: 0 15px">
+                <span style="font-size: .1rem">正品保证 . 极速退款 . 七天退换</span>
+            </div>
+            <div class="item" style="border-top: 0;border-left: 0;border-right:0;padding: 0 15px">
+               <i class="ion-ios-cart"></i> <span style="font-size: .1rem">全国1028家以上门店同款在售</span>
+            </div>
+            <div class="item" style="border-top: 0;border-left: 0;border-right:0">
+                <span>-------空白分割线------</span>
+            </div>
+        </div>
+
+
+
+    </ion-content>
+
+    <div class="tabs tabs-icon-top row" style="padding: 0;">
+        <a class="tab-item col-10">
+            <i class="icon ion-ios-ionic-outline"></i>
+            客服
+        </a>
+        <a class="tab-item col-10">
+            <i class="icon ion-ios-home-outline"></i>
+            店铺
+        </a>
+        <a class="tab-item col-10">
+            <i class="icon ion-ios-star-outline"></i>
+            收藏
+        </a>
+        <div class="tab-item activated col"  style="text-align: center;height: 100%;background-color: #ff9500" ui-sref="shop">
+            <div style="line-height: 40px;color:#fff;font-size: large">加入购物车</div>
+        </div>
+        <div class="tab-item activated col" style="text-align: center;height: 100%;background-color: #dd2727">
+            <div style="line-height: 40px;color:#fff;font-size: large">立即购买</div>
+        </div>
+    </div>
+
+
+
+
+</script>
+
+<script id="templates/tabs.html" type="text/ng-template">
+
+
+    <ion-side-menus>
+        <ion-side-menu-content  drag-content="false">
+            <ion-tabs class="tabs-icon-top tabs-light1">
+
+                <ion-tab title="天猫"
+                         icon-on="icon ion-ios-home red"
+                         icon-off="icon ion-ios-home-outline">
+
+                    <ion-header-bar class="bar-assertive bar-as1 item-input-inset">
+
+                        <button class="button button-clear icon-left ion-navicon" menu-toggle="left"></button>
+
+                        <label class="item-input-wrapper">
+                            <i class="icon ion-android-search placeholder-icon"></i>
+                            <input type="search" placeholder="开春出游随心拍" ui-sref="cart">
+                        </label>
+                        <button class="button button-clear icon-right ion-chatbubble-working">
+                        </button>
+
+                    </ion-header-bar>
+
+                    <ion-content ng-controller="MyController" style="top:0">
+
+                        <ion-refresher
+                                pulling-text="下拉刷新..."
+                                on-refresh="doRefresh()">
+                        </ion-refresher>
+
+
+                        <div class="item" align="center" style="padding:0" ng-controller="SlideController">
+                            <ion-slide-box style="height:1.8rem" does-continue="true"
+                                           auto-play="true" slide-interval="5000" show-pager="true" active-slide="index" pager-click="go(index)">
+
+                                <ion-slide>
+                                    <div class="box"><img src="pic/gg1.jpg" style="width:100%" alt=""></div>
+                                </ion-slide>
+                                <ion-slide>
+                                    <div class="box"><img src="pic/gg2.jpg" style="width:100%" alt=""></div>
+                                </ion-slide>
+                                <ion-slide>
+                                    <div class="box"><img src="pic/gg3.jpg" style="width:100%" alt=""></div>
+                                </ion-slide>
+                                <ion-slide>
+                                    <div class="box"><img src="pic/gg4.jpg" style="width:100%" alt=""></div>
+                                </ion-slide>
+
+
+                            </ion-slide-box>
+                        </div>
+
+
+                        <div class="wi-top-cont clearfix">
+                            <div class="wi-average-wrap row">
+                                <div class="wi-main-flex2 font-s col">
+                                    <div class="wi-main-item">
+                                        <div class="wi-top-pic">
+                                            <img src="pic/dht1.png"></div>
+                                    </div>
+                                    积分乐园
+                                </div>
+                                <div class="wi-main-flex2 font-s col">
+                                    <div class="wi-main-item">
+                                        <div class="wi-top-pic">
+                                            <img src="pic/dht2.png"></div>
+                                    </div>
+                                    充值中心
+                                </div>
+                                <div class="wi-main-flex2 font-s col">
+                                    <div class="wi-main-item">
+                                        <div class="wi-top-pic">
+                                            <img src="pic/dht3.png"></div>
+                                    </div>
+                                    天猫国际
+                                </div>
+                                <div class="wi-main-flex2 font-s col">
+                                    <div class="wi-main-item">
+                                        <div class="wi-top-pic">
+                                            <img src="pic/dht4.png"></div>
+                                    </div>
+                                    聚划算
+                                </div>
+                                <div class="wi-main-flex2 font-s col">
+                                    <div class="wi-main-item">
+                                        <div class="wi-top-pic">
+                                            <img src="pic/dht5.png"></div>
+                                    </div>
+                                    天猫超市
+                                </div>
+                            </div>
+                            <div class="wi-average-wrap row">
+                                <div class="wi-main-flex2 font-s col">
+                                    <div class="wi-main-item">
+                                        <div class="wi-top-pic">
+                                            <img src="pic/dht6.png"></div>
+                                    </div>
+                                    免费试用
+                                </div>
+                                <div class="wi-main-flex2 font-s col">
+                                    <div class="wi-main-item">
+                                        <div class="wi-top-pic">
+                                            <img src="pic/dht7.png"></div>
+                                    </div>
+                                    尤物
+                                </div>
+                                <div class="wi-main-flex2 font-s col">
+                                    <div class="wi-main-item">
+                                        <div class="wi-top-pic">
+                                            <img src="pic/dht8.png"></div>
+                                    </div>
+                                    粉丝趴
+                                </div>
+                                <div class="wi-main-flex2 font-s col">
+                                    <div class="wi-main-item">
+                                        <div class="wi-top-pic">
+                                            <img src="pic/dht9.png"></div>
+                                    </div>
+                                    清明踏青
+                                </div>
+                                <div class="wi-main-flex2 font-s col">
+                                    <div class="wi-main-item">
+                                        <div class="wi-top-pic">
+                                            <img src="pic/dht10.png"></div>
+                                    </div>
+                                    分类
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="wi-topline">
+                            <div class="wi-topline-logo-wrap">
+                                <div class="wi-topline-logo"><img src="pic/tmrd.png" alt=""></div>
+                            </div>
+                            <div id="text-scroll" class="wi-topline-cont">
+                                <ul class="wi-topline-cont1">
+                                    <li id="scroll-title1">
+                                        <span class="wi-topline-tips font-xs">热门</span>
+                                        <span class="font-x">最美出游季，女装大牌5折！</span>
+                                        <p class="font-x red">萌熊全场99元起+CA满299减20！</p>
+                                    </li>
+                                    <li id="scroll-title2">
+                                        <span class="wi-topline-tips font-xs">热门</span>
+                                        <span class="font-x">兰芝防晒季，买1享3</span>
+                                        <p class="font-x red">璀璨美肌三重满赠享不停</p>
+                                    </li>
+                                    <li  id="scroll-title3">
+                                        <span class="wi-topline-tips font-xs">热门</span>
+                                        <span class="font-x">顾家家居，全场5折起</span>
+                                        <p class="font-x red">预约送500元大礼+直降3000</p>
+                                    </li>
+                                    <li id="scroll-title4">
+                                        <span class="wi-topline-tips font-xs">热门</span>
+                                        <span class="font-x">最美出游季，女装大牌5折！</span>
+                                        <p class="font-x red">萌熊全场99元起+CA满299减20！</p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="scroll-gg1">
+                            <img src="pic/gif1.gif">
+                            <img src="pic/gif2.jpg">
+                            <img src="pic/gif3.jpg">
+                        </div>
+
+                        <div class="item item-divider" align="center">
+                            <span class="vline redline"></span>
+                            <img src="pic/hot.jpg" alt="" style="width: 4%;">
+                            <span class="red">必抢</span>
+                            <span class="vline redline"></span>
+                        </div>
+
+                        <div class="row bqitem" align="center">
+                            <div class="col">
+                                <div>今日必抢</div>
+                                <img src="pic/bq1.jpg">
+                                <span class="red">¥269</span>
+                                <span class="line-th">¥482</span></div>
+                            <div class="col">
+                                <div>趋势榜</div>
+                                <img src="pic/bq2.jpg">
+                                <span class="red">¥38</span>
+                                <span class="line-th">¥78</span></div>
+                            <div class="col">
+                                <div>进口必抢</div>
+                                <img src="pic/bq3.jpg">
+                                <span class="red">¥299</span>
+                                <span class="line-th">¥590</span></div>
+                            <div class="col">
+                                <div>巨超值</div>
+                                <img src="pic/bq4.jpg">
+                                <span class="red">¥999</span>
+                                <span class="line-th">¥1699</span></div>
+                        </div>
+
+
+                        <div class="item item-divider" align="center">
+                            <span class="vline blueline"></span>
+                            <img src="pic/phone.jpg" alt="" style="width: 4%;">
+                            <span class="blue">潮流酷玩</span>
+                            <span class="vline blueline"></span>
+                        </div>
+
+                        <div class="row cjitem" align="center">
+                            <div class="col">
+                                <div>苏宁易购</div>
+                                <div class="blue font-xs">手机节开幕疯抢</div>
+                                <img src="pic/cj1.jpg"></div>
+                            <div class="col">
+                                <div>天天搞机</div>
+                                <div class="blue font-xs">R9s绿色限量开抢</div>
+                                <img src="pic/cj2.jpg"></div>
+                            <div class="col">
+                                <div>IT爱好者</div>
+                                <div class="blue font-xs">好玩更好用</div>
+                                <img src="pic/cj3.jpg" style="width: 1rem;"></div>
+                        </div>
+
+
+                        <div class="item item-divider" align="center">
+                            <span class="vline orangeline"></span>
+                            <img src="pic/star.jpg" alt="" style="width: 4%;">
+                            <span class="orange">品牌特卖</span>
+                            <span class="vline orangeline"></span>
+                        </div>
+
+                        <div class="scroll-gg1">
+                            <img src="pic/pp1.jpg" class="rightline">
+                            <img src="pic/pp2.jpg">
+                        </div>
+
+
+                    </ion-content>
+
+                </ion-tab>
+
+                <ion-tab title="关注" icon-on="icon ion-social-linkedin red" icon-off="icon ion-social-linkedin-outline">
+
+                    <ion-header-bar class="bar-light item-input-inset">
+
+                        <button class="button button-clear icon-left ion-navicon" menu-toggle="left"></button>
+
+                        <label class="item-input-wrapper" style="background:#eee">
+                            <i class="icon ion-android-search placeholder-icon"></i>
+                            <input type="search" placeholder="搜索关注的内容">
+                        </label>
+                        <button class="button button-clear icon-right ion-chatbubble-working">
+                        </button>
+
+                    </ion-header-bar>
+                    <ion-content ng-controller="MyController">
+
+                        <ion-refresher
+                                pulling-text="下拉刷新..."
+                                on-refresh="doRefresh()">
+                        </ion-refresher>
+
+                        <div class="list" style="overflow: auto;">
+
+
+                            <a class="item item-avatar" href="#">
+                                <img src="pic/dp0.jpg">
+                                <span>亲，您还没登录呢~</span>
+                                <p>推开这扇门，惊喜不断！</p>
+                                <span class="wi-topline-tips1 font-xs">马上登录</span>
+                            </a>
+
+                            <a class="item item-avatar" href="#" style="padding-bottom:10px">
+                                <img src="pic/dp1.jpg">
+                                <span>良品铺子<span class="wi-topline-tips2 font-xs">粉丝趴</span></span>
+                                <p>世纪难题终于被破解</p>
+                                <img src="pic/dpm1.jpg" style="width: 100%"><br>
+                                <span style="margin-right: 1.7rem" class="font-s gray">9小时前</span><span class="font-s gray">395评论</span>
+                            </a>
+
+
+                            <a class="item item-avatar" href="#" style="padding-bottom:10px">
+                                <img src="pic/dp1.jpg">
+                                <span>良品铺子<span class="wi-topline-tips2 font-xs">粉丝趴</span></span>
+                                <br>
+                                <img src="pic/dpm2.jpg" style="width: 100%"><br>
+                                <span style="margin-right: 1.7rem" class="font-s gray">9小时前</span><span class="font-s gray">178评论</span>
+                            </a>
+
+                            <a class="item item-avatar" href="#" style="padding-bottom:10px">
+                                <img src="pic/dp2.jpg">
+                                <span>粉红娘娘饰品旗舰店<span class="wi-topline-tips2 font-xs">店铺</span></span>
+                                <p>本店有上新：韩版饰品水钻兔耳朵头饰发夹蕾丝</p>
+                                <img src="pic/dpm3.jpg" style="width: 100%"><br>
+                                <span style="margin-right: 1.7rem" class="font-s gray">9小时前</span>
+                            </a>
+
+                            <a class="item item-avatar" href="#" style="padding-bottom:10px">
+                                <img src="pic/dp3.jpg">
+                                <span>优衣库官方旗舰店<span class="wi-topline-tips2 font-xs">店铺</span></span>
+                                <br>
+                                <img src="pic/dpm4.jpg" style="width: 100%"><br>
+                                <span style="margin-right: 1.7rem" class="font-s gray">10小时前</span><span class="font-s gray">678评论</span>
+                            </a>
+
+                            <a class="item item-avatar" href="#" style="padding-bottom:10px">
+                                <img src="pic/dp4.jpg">
+                                <span>康爱多大药房旗舰店<span class="wi-topline-tips2 font-xs">店铺</span></span>
+                                <p>本店有上新：宝慷 前列康舒胶囊 0.3g*30粒/盒</p>
+                                <img src="pic/dpm5.jpg" style="width: 100%"><br>
+                                <span style="margin-right: 1.7rem" class="font-s gray">13小时前</span>
+                            </a>
+
+                            <a class="item item-divider">
+                                <img src="pic/end.jpg" alt=""  style="width: 13%;margin: 0 1.46rem">
+                                <p class="align" style="color:#ccc;margin-bottom: 10px">喵，已经看到最后啦</p>
+                            </a>
+
+                        </div>
+
+                    </ion-content>
+
+                </ion-tab>
+
+
+
+
+
+                <!--<ion-tab title="天猫直播" icon-on="icon ion-social-youtube red" icon-off="icon ion-social-youtube-outline">-->
+
+
+
+
+
+                <!--</ion-tab>-->
+
+
+
+
+
+
+                <ion-tab title="购物车" icon-on="icon ion-ios-cart red" icon-off="icon ion-ios-cart-outline">
+                    <ion-header-bar class="bar-light">
+                        <label class="item-input-wrapper">
+                            购物车
+                        </label>
+                    </ion-header-bar>
+
+
+                    <ion-content ng-controller="MyController">
+                        <ion-refresher
+                                pulling-text="下拉刷新..."
+                                on-refresh="doRefresh()">
+                        </ion-refresher>
+                        <div class="item item-divider" align="center" style="min-height:300px;color:#ddd;padding-top:1rem;background-color:#f1f1f1">
+                            <span class="vline grayline" style="margin-bottom: 8px"></span>
+                            <span class="ion-ios-cart-outline" style="font-size: 30px"></span>
+                            <span class="vline grayline" style="margin-bottom: 8px"></span>
+                            <div style="padding:10px">
+                                <p style="margin-top: 10px;color:#bbb">购物车还是空的，</p>
+                                <p style="margin-top: 10px;color:#bbb">去挑几件中意的商品吧</p>
+                            </div>
+                        </div>
+                        <div class="item" align="center" style="max-height:30px;color:#bbb;padding-top:.1rem;background-color:#f9f9f9;border-width: 0;font-size: 14px">
+                            <span class="vline grayline" style="width: 120px;"></span>
+                            <span class="ion-ios-ionic-outline red" style="font-size: 20px"></span>
+                            <span> 猜你喜欢</span>
+                            <span class="vline grayline" style="width: 114px;"></span>
+                        </div>
+                        <div style="max-height:50px;color:#444;background-color:#fafafa;border-width: 0;padding: 5px 0">
+                            <span style="margin-left: 15px">猜你喜欢</span>
+                        </div>
+                        <div class="row bqitem1">
+                            <div class="col">
+                                <img src="pic/wm1.jpg">
+                                <p>HLA海澜之家水洗休闲裤春季热卖微弹修身裤子</p>
+                                <span class="red">¥168</span>
+                                <span class="line-th">¥198.0</span></div>
+                            <div class="col">
+                                <img src="pic/wm2.jpg">
+                                <p>NB 373系列男鞋女鞋复古鞋跑步鞋休闲运动鞋</p>
+                                <span class="red">¥363</span>
+                                <span class="line-th">¥438.0</span></div>
+                        </div>
+
+                        <div class="row bqitem1">
+                            <div class="col">
+                                <img src="pic/wm3.jpg">
+                                <p>[热销]短款打底衫女长袖春装半高领毛衣女套头学生宽松上衣小衫春季外套</p>
+                                <span class="red">¥68</span>
+                                <span class="line-th">¥98.0</span></div>
+                            <div class="col">
+                                <img src="pic/wm4.jpg">
+                                <p>[热销]春秋魔术裤黑色打底裤女不加绒薄款外穿铅笔裤小脚裤紧身裤子韩国</p>
+                                <span class="red">¥69</span>
+                                <span class="line-th">¥88.0</span></div>
+                        </div>
+
+                        <div class="row bqitem1">
+                            <div class="col">
+                                <img src="pic/wm5.jpg">
+                                <p>[热销]台湾进口 自然素材焦糖黑糖饼干早餐代餐饼干办公室休闲零食 365g</p>
+                                <span class="red">¥19</span>
+                                <span class="line-th">¥29.9</span></div>
+                            <div class="col">
+                                <img src="pic/wm6.jpg">
+                                <p>[热销]小梅的零食蜜饯组合640g 话梅杨梅乌酸梅李子葡萄干果脯大礼包邮</p>
+                                <span class="red">¥29</span>
+                                <span class="line-th">¥48.0</span></div>
+                        </div>
+
+                        <div class="row bqitem1">
+                            <div class="col">
+                                <img src="pic/wm7.jpg">
+                                <p>[热销]Apple/苹果 iPhone 7</p>
+                                <span class="red">¥6188</span>
+                                <span class="line-th">¥6798.0</span></div>
+                            <div class="col">
+                                <img src="pic/wm8.jpg">
+                                <p>嘉宝吸盘卫生间置物架</p>
+                                <span class="red">¥45</span>
+                                <span class="line-th">¥76.0</span></div>
+                        </div>
+
+                        <a class="item item-divider">
+                            <img src="pic/end.jpg" alt=""  style="width: 13%;margin: 0 1.46rem">
+                            <p class="align" style="color:#ccc;margin-bottom: 10px">喵，已经看到最后啦</p>
+                        </a>
+
+
+
+
+                    </ion-content>
+
+
+
+
+
+                </ion-tab>
+
+
+
+
+
+
+
+
+                <ion-tab title="我" icon-on="icon ion-ios-person red" icon-off="icon ion-ios-person-outline" ng-class="{true:'tab-red-point',false:''}[true]" >
+                    <header class="bar bar-header bar-assertive bar-as2">
+                        <button class="button button-clear icon-left ion-ios-gear-outline"></button>
+                        <button class="button button-clear icon-right ion-chatbubble-working"></button>
+
+
+                    </header>
+                    <ion-content ng-controller="MyController">
+
+                        <ion-refresher
+                                pulling-text="下拉刷新..."
+                                on-refresh="doRefresh()">
+                        </ion-refresher>
+
+                        <div style="width:100%;height: 1.8rem;background-color: #d91f2f;text-align: center" >
+                            <img src="pic/login.png" alt="" style="width: 15%;padding-top: 15%">
+                            <p style="margin-top: 3%;color: #fff">点击登录</p>
+                        </div>
+                        <div>
+                            <div class="tabs tabs-icon-top tabs-light boxs" style="position: relative;padding-top: 15px;height: 70px">
+                                <a class="tab-item">
+                                    <i class="icon ion-bag"></i>商品收藏</a>
+                                <a class="tab-item">
+                                    <i class="icon ion-map"></i>店铺收藏</a>
+                                <a class="tab-item">
+                                    <i class="icon ion-document"></i>内容收藏</a>
+                                <a class="tab-item">
+                                    <i class="icon ion-ios-heart-outline"></i>我的关注</a>
+                            </div>
+                        </div>
+
+                        <div>
+                            <a class="item"  style="border-width: 0;">
+                                全部订单
+                          <span class="item-note">
+                            查看全部订单
+                          </span>
+                            </a>
+                        </div>
+
+
+
+                        <div >
+                            <div class="tabs tabs-icon-top tabs-light boxs" style="position: relative;padding: 20px 0 20px 0;height: 80px">
+                                <a class="tab-item">
+                                    <i class="icon ion-card"></i>待付款</a>
+                                <a class="tab-item">
+                                    <i class="icon ion-ios-paperplane-outline"></i>待发货</a>
+                                <a class="tab-item">
+                                    <i class="icon ion-ios-download-outline"></i>待收货</a>
+                                <a class="tab-item">
+                                    <i class="icon ion-ios-paper-outline"></i>待评价</a>
+                                <a class="tab-item">
+                                    <i class="icon ion-social-yen-outline"></i>退款/售后</a>
+                            </div>
+                        </div>
+
+                        <div class="line-shadow" style="padding:15px">
+                            <div>必备工具</div>
+                        </div>
+
+                        <div class="boxs">
+                            <div class="wi-average-wrap row" style="padding: 0;">
+                                <div class="wi-main-flex2 font-s col bdline" style="padding: 10px">
+                                    <div class="wi-main-item1">
+                                        <div class="wi-top-pic1">
+                                            <img src="pic/wt1.png"></div>
+                                    </div>
+                                    我的资产
+                                </div>
+                                <div class="wi-main-flex2 font-s col bdline" style="padding: 10px">
+                                    <div class="wi-main-item1">
+                                        <div class="wi-top-pic1">
+                                            <img src="pic/wt2.png"></div>
+                                    </div>
+                                    我的足迹
+                                </div>
+                                <div class="wi-main-flex2 font-s col bdline" style="padding: 10px">
+                                    <div class="wi-main-item1">
+                                        <div class="wi-top-pic1">
+                                            <img src="pic/wt3.png"></div>
+                                    </div>
+                                    我的分享
+                                </div>
+                                <div class="wi-main-flex2 font-s col bdline" style="padding: 10px">
+                                    <div class="wi-main-item1">
+                                        <div class="wi-top-pic1">
+                                            <img src="pic/wt4.png"></div>
+                                    </div>
+                                    免费试用
+                                </div>
+                            </div>
+                            <div class="wi-average-wrap row" style="padding: 0;">
+                                <div class="wi-main-flex2 font-s col bdline" style="padding: 10px">
+                                    <div class="wi-main-item1">
+                                        <div class="wi-top-pic1">
+                                            <img src="pic/wt5.png"></div>
+                                    </div>
+                                    机票火车票
+                                </div>
+                                <div class="wi-main-flex2 font-s col bdline" style="padding: 10px">
+                                    <div class="wi-main-item1">
+                                        <div class="wi-top-pic1">
+                                            <img src="pic/wt6.png"></div>
+                                    </div>
+                                    查询话费
+                                </div>
+                                <div class="wi-main-flex2 font-s col bdline" style="padding: 10px">
+                                    <div class="wi-main-item1">
+                                        <div class="wi-top-pic1">
+                                            <img src="pic/wt7.png"></div>
+                                    </div>
+                                    我的小蜜
+                                </div>
+                                <div class="wi-main-flex2 font-s col bdline" style="padding: 10px">
+                                    <div class="wi-main-item1">
+                                        <div class="wi-top-pic1">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="line-shadow" style="padding:15px">
+                            <div>更多工具</div>
+                        </div>
+
+                        <div>
+                            <div class="wi-average-wrap row" style="padding: 0;">
+                                <a class="wi-main-flex2 font-s col bdline" style="padding: 10px">
+                                    <div class="wi-main-item1">
+                                        <div class="wi-top-pic1">
+                                            <img src="pic/wy1.png"></div>
+                                    </div>
+                                    企业购
+                                </a>
+                                <div class="wi-main-flex2 font-s col bdline" style="padding: 10px">
+                                    <div class="wi-main-item1">
+                                        <div class="wi-top-pic1">
+                                            <img src="pic/wy2.png"></div>
+                                    </div>
+                                    会员码
+                                </div>
+                                <div class="wi-main-flex2 font-s col bdline" style="padding: 10px">
+                                    <div class="wi-main-item1">
+                                        <div class="wi-top-pic1">
+                                            <img src="pic/wy3.png"></div>
+                                    </div>
+                                    会员中心
+                                </div>
+                                <div class="wi-main-flex2 font-s col bdline" style="padding: 10px">
+                                    <div class="wi-main-item1">
+                                        <div class="wi-top-pic1">
+                                            <img src="pic/wy4.png"></div>
+                                    </div>
+                                    听一听
+                                </div>
+                            </div>
+                            <div class="wi-average-wrap row" style="padding: 0;">
+                                <div class="wi-main-flex2 font-s col bdline" style="padding: 10px">
+                                    <div class="wi-main-item1">
+                                        <div class="wi-top-pic1">
+                                            <img src="pic/wy5.png"></div>
+                                    </div>
+                                    天猫无忧购
+                                </div>
+                                <div class="wi-main-flex2 font-s col bdline" style="padding: 10px">
+                                    <div class="wi-main-item1">
+                                        <div class="wi-top-pic1">
+                                            <img src="pic/wy6.png"></div>
+                                    </div>
+                                    我的发票
+                                </div>
+                                <div class="wi-main-flex2 font-s col bdline" style="padding: 10px">
+                                    <div class="wi-main-item1">
+                                        <div class="wi-top-pic1"></div>
+                                    </div>
+                                </div>
+                                <div class="wi-main-flex2 font-s col bdline" style="padding: 10px">
+                                    <div class="wi-main-item1">
+                                        <div class="wi-top-pic1">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </ion-content>
+
+                </ion-tab>
+
+            </ion-tabs>
+        </ion-side-menu-content>
+        <!--expose-aside-when="(min-width:300px)"-->
+        <ion-side-menu side="left" width="320" nav-direction="enter">
+
+            <div class="row" style="padding:0;height: 100%">
+
+                <div class="page-content col col-30  bgline" style="padding:0;">
+                    <ul class="line-shadow cii-wrap">
+                        <li ui-sref="tabs.home"><div class="cii-item cat-line-shadow"><a  class="vi-a">推荐分类</a></div></li>
+                        <li ui-sref="tabs.facts"><div class="cii-item cat-line-shadow"><a  class="vi-a">潮流女装</a></div></li>
+                        <li ui-sref="tabs.home"><div class="cii-item cat-line-shadow"><a  class="vi-a">美妆个护</a></div></li>
+                        <li ui-sref="tabs.facts"><div class="cii-item cat-line-shadow"><a  class="vi-a">家用电器</a></div></li>
+                        <li ui-sref="tabs.home"><div class="cii-item cat-line-shadow"><a  class="vi-a">电脑办公</a></div></li>
+                        <li ui-sref="tabs.facts"><div class="cii-item cat-line-shadow"><a  class="vi-a">手机数码</a></div></li>
+                        <li ui-sref="tabs.home"><div class="cii-item cat-line-shadow"><a  class="vi-a">母婴童装</a></div></li>
+                        <li ui-sref="tabs.facts"><div class="cii-item cat-line-shadow"><a  class="vi-a">图书</a></div></li>
+                        <li ui-sref="tabs.home"><div class="cii-item cat-line-shadow"><a  class="vi-a">家居家纺</a></div></li>
+                        <li ui-sref="tabs.facts"><div class="cii-item cat-line-shadow"><a  class="vi-a">厨房用品</a></div></li>
+                        <li ui-sref="tabs.home"><div class="cii-item cat-line-shadow"><a  class="vi-a">家具建材</a></div></li>
+                    </ul>
+                </div>
+
+                <!--<ion-nav-view  class="col"  style="padding: 0;position: relative"></ion-nav-view>-->
+                <!--<ion-nav-view style="top:400px" name="home-tab">button-royal</ion-nav-view>-->
+                <ion-nav-view class="col"  style="padding: 0;position: relative" name="home-tab">button-royal</ion-nav-view>
+            </div>
+
+        </ion-side-menu>
+    </ion-side-menus>
+
+
+
+
+
+</script>
+
+<script id="templates/home.html" type="text/ng-template">
+    <ion-view view-title="Home">
+        <div  class="ionview">
+            <ul class="line-shadow cii-wrap">
+                <img src="pic/side.jpg" alt="" style="width: 100%;">
+                <li class="item-divider font-xs">
+                    专场推荐
+                </li>
+                <li class="cii-item1 cat-line-shadow">
+                    <div class="row cjitem" align="center">
+                        <div class="col">
+                            <img src="pic/fl1.jpg">
+                            <span>4.5雷鸟超新品日</span></div>
+                        <div class="col">
+                            <img src="pic/fl2.jpg">
+                            <span>家电家装节</span></div>
+                    </div>
+                </li>
+                <li class="item-divider font-xs">热门分类</li>
+                <li class="cii-item1">
+                    <div class="row cjitem" align="center">
+                        <div class="col">
+                            <img src="pic/fl3.png">
+                            <span>手机</span></div>
+                        <div class="col">
+                            <img src="pic/fl4.jpg">
+                            <span>笔记本</span></div>
+                    </div>
+                </li>
+                <li class="cii-item1">
+                    <div class="row cjitem" align="center">
+                        <div class="col">
+                            <img src="pic/fl5.jpg">
+                            <span>空调</span></div>
+                        <div class="col">
+                            <img src="pic/fl6.jpg">
+                            <span>收纳用品</span></div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </ion-view>
+</script>
+
+<script id="templates/facts.html" type="text/ng-template">
+    <ion-view view-title="Facts">
+        <div class="ionview">
+            <ul class="line-shadow cii-wrap">
+                <img src="pic/side2.png" alt="" style="width: 100%;">
+                <li class="item-divider font-xs">热卖品类</li>
+                <li class="cii-item1 cat-line-shadow">
+                    <div class="row cjitem" align="center">
+                        <div class="col">
+                            <img src="pic/fl7.jpg">
+                            <span>当季新品</span></div>
+                        <div class="col">
+                            <img src="pic/fl8.jpg">
+                            <span>短袖T恤</span></div>
+                    </div>
+                </li>
+                <li class="cii-item1">
+                    <div class="row cjitem" align="center">
+                        <div class="col">
+                            <img src="pic/fl9.jpg">
+                            <span>长袖衬衫</span></div>
+                        <div class="col">
+                            <img src="pic/fl10.jpg">
+                            <span>雪纺衫</span></div>
+                    </div>
+                </li>
+                <li class="cii-item1">
+                    <div class="row cjitem" align="center">
+                        <div class="col">
+                            <img src="pic/fl11.jpg">
+                            <span>针织开衫</span></div>
+                        <div class="col">
+                            <img src="pic/fl12.jpg">
+                            <span>宽松卫衣</span></div>
+                    </div>
+                </li>
+                <li class="cii-item1">
+                    <div class="row cjitem" align="center">
+                        <div class="col">
+                            <img src="pic/fl13.jpg">
+                            <span>休闲裤</span></div>
+                        <div class="col">
+                            <img src="pic/fl14.jpg">
+                            <span>小脚裤</span></div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </ion-view>
+</script>
+
+
+</body>
+</html>
